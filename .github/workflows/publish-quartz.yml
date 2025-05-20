@@ -1,4 +1,4 @@
-name: Manual Build & Push Quartz Image
+name: Build & Push Quartz Image
 
 on:
   workflow_dispatch:
@@ -7,11 +7,14 @@ on:
         description: "Quartz Version (used as build arg and tag)"
         required: true
         type: string
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository_owner }}/docker/quartz
   QUARTZ_VERSION: ${{ github.event.inputs.QUARTZ_VERSION }}
 
 jobs:
@@ -40,7 +43,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
-          images: ${{ env.REGISTRY }}/docker/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
         id: build-and-push
