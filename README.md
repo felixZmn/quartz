@@ -17,3 +17,7 @@ docker run -it --rm \
   -v /path/to/your/public:/app/quartz/public \
   npx quartz build
 ```
+
+## Build
+
+For information on how to build the image, please refer to the [build workflow](.github/workflows/publish-quartz.yml) in this repository.
