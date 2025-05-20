@@ -1,0 +1,34 @@
+name: Manual Build & Push Quartz Image
+
+on:
+    workflow_dispatch:
+        inputs:
+            QUARTZ_VERSION:
+                description: "Quartz Version (used as build arg and tag)"
+                required: true
+                type: string
+
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+        permissions:
+            packages: write
+            contents: read
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Log in to GitHub Container Registry
+              run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            - name: Build Docker image
+              run: |
+                  docker build \
+                    --build-arg QUARTZ_VERSION=${{ github.event.inputs.QUARTZ_VERSION }} \
+                    -t ghcr.io/${{ github.repository_owner }}/quartz:${{ github.event.inputs.QUARTZ_VERSION }} .
+
+            - name: Push Docker image
+              run: |
+                  docker push ghcr.io/${{ github.repository_owner }}/quartz:${{ github.event.inputs.QUARTZ_VERSION }}
+
