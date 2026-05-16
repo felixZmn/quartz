@@ -1,5 +1,5 @@
 FROM node:24-slim
-ARG QUARTZ_VERSION="v4.5.0"
+ARG QUARTZ_VERSION="v4.5.2"
 
 # Set the working directory
 WORKDIR /app
