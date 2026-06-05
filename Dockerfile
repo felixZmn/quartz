@@ -1,4 +1,4 @@
-FROM node:24-slim
+FROM node:26-slim
 ARG QUARTZ_VERSION="v4.5.2"
 
 # Set the working directory
